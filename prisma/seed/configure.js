@@ -501,9 +501,39 @@ const seedRoles = async (modules) => {
     moduleId: modules.base.id,
   });
 
+  // Kick Off roles
+  const player = await seedRole({
+    code: 'player',
+    name: 'Jugador',
+    description: 'Usuario que reserva y juega en las canchas',
+    moduleId: modules.base.id,
+  });
+  const referee = await seedRole({
+    code: 'referee',
+    name: 'Árbitro',
+    description: 'Usuario que arbitra partidos',
+    moduleId: modules.base.id,
+  });
+  const organizer = await seedRole({
+    code: 'organizer',
+    name: 'Organizador',
+    description: 'Usuario que organiza torneos y eventos',
+    moduleId: modules.base.id,
+  });
+  const owner = await seedRole({
+    code: 'owner',
+    name: 'Propietario de cancha',
+    description: 'Propietario o administrador de canchas',
+    moduleId: modules.base.id,
+  });
+
   return {
     user,
     administrator,
+    player,
+    referee,
+    organizer,
+    owner,
   };
 };
 

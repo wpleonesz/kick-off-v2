@@ -65,6 +65,18 @@ const CREDENTIALS = {
       value: true,
     },
   },
+  roles: {
+    select: {
+      roleId: true,
+      Role: {
+        select: {
+          id: true,
+          code: true,
+          name: true,
+        },
+      },
+    },
+  },
 };
 
 const RECOVER_EMAIL = {

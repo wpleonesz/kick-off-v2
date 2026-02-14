@@ -10,10 +10,6 @@ setLocale(Locale);
 const schema = Yup.object().shape({
   username: Yup.string().required(''),
   password: Yup.string().required(''),
-  institutionId: yup.number(Yup).when('institutions', {
-    is: (institutions) => !isEmpty(institutions),
-    then: yup.number(Yup).required('Institución requerida'),
-  }),
 });
 
 export const resolver = yupResolver(schema);

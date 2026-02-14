@@ -1,5 +1,6 @@
 import PersonData from '@database/base/person';
 import UserData from '@database/base/user';
+import RolesOnUsers from '@database/base/RolesOnUsers';
 import schemas from '@database/base/user/schemas';
 import { smtpSever } from '@lib/mail/server';
 import { hash } from '@lib/hash';
@@ -28,6 +29,11 @@ const login = async (username, password) => {
     name: user.Person?.name || user.username,
     dni: user.Person?.dni,
     email: user.email,
+    roles: (user.roles || []).map(r => ({
+      id: r.Role?.id,
+      code: r.Role?.code,
+      name: r.Role?.name,
+    })),
   };
 };
 
@@ -74,6 +80,16 @@ const createUser = async (data) => {
       email: data.email,
       personId: toInteger(person.id),
     });
+
+    // Asignar rol si se proporcionó
+    if (data.roleId) {
+      const rolesOnUsers = new RolesOnUsers();
+      await rolesOnUsers.create({
+        roleId: toInteger(data.roleId),
+        userId: toInteger(user.id),
+        active: true,
+      });
+    }
 
     return { user, person };
   } catch (error) {

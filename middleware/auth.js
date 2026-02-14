@@ -24,6 +24,8 @@ const auth = nextConnect()
   .use((request, response, next) => {
     if (request.method === 'POST' && request.url === '/api/auth/signin')
       return next();
+    if (request.method === 'POST' && request.url === '/api/auth/signup')
+      return next();
     if (request.method === 'GET' && request.url === '/api/auth/signout')
       return next();
     if (!request.user)
