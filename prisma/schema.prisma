@@ -208,6 +208,8 @@ model courts {
   id            Int             @id @default(autoincrement())
   name          String
   location      String
+  latitude      Float?
+  longitude     Float?
   userId        Int
   User          Base_user       @relation(fields: [userId], references: [id])
   isIndoor      Boolean         @default(false)

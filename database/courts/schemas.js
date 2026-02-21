@@ -2,6 +2,8 @@ const DEFAULT = {
   id: true,
   name: true,
   location: true,
+  latitude: true,
+  longitude: true,
   userId: true,
   User: {
     select: {

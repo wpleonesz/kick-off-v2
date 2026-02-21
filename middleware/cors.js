@@ -8,11 +8,29 @@ const handler = () => {
     const origin = request.headers.origin;
 
     // Orígenes permitidos (desarrollo y producción)
-    const allowedOrigins = ['http://localhost:3000', 'http://localhost'];
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'http://localhost',
+      'capacitor://localhost',
+      'ionic://localhost',
+      'http://localhost:8100', // Puerto por defecto de Ionic
+    ];
 
-    const allowOrigin = allowedOrigins.includes(origin)
-      ? origin
-      : 'http://localhost:3000';
+    // Permitir requests de Capacitor (apps nativas) que pueden no tener origen
+    // o permitir cualquier origen de localhost
+    let allowOrigin = '*'; // Por defecto, permitir todos para apps nativas
+
+    if (origin) {
+      // Si hay origen, verificar si está permitido
+      if (
+        allowedOrigins.includes(origin) ||
+        origin.startsWith('http://localhost') ||
+        origin.startsWith('capacitor://') ||
+        origin.startsWith('ionic://')
+      ) {
+        allowOrigin = origin;
+      }
+    }
 
     // Headers CORS
     response.setHeader('Access-Control-Allow-Origin', allowOrigin);
@@ -22,9 +40,14 @@ const handler = () => {
     );
     response.setHeader(
       'Access-Control-Allow-Headers',
-      'Content-Type, Authorization, X-Requested-With',
+      'Content-Type, Authorization, X-Requested-With, Cookie, Set-Cookie',
     );
-    response.setHeader('Access-Control-Allow-Credentials', 'true');
+
+    // Solo permitir credentials si no es wildcard
+    if (allowOrigin !== '*') {
+      response.setHeader('Access-Control-Allow-Credentials', 'true');
+    }
+
     response.setHeader('Access-Control-Max-Age', '3600');
 
     // Manejar preflight requests (OPTIONS)
