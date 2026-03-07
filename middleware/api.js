@@ -1,6 +1,7 @@
 import nextConnect from 'next-connect';
 import Api from '@lib/api';
 import { toInteger } from 'lodash';
+import { createLoaders } from '@lib/dataloader';
 
 /** Convertir el identificador del registro obtenido mediante un request a
  * formato numérico */
@@ -14,6 +15,7 @@ const handler = () => {
     const _api = new Api(request, response);
     request.api = _api;
     request.do = _api.handler;
+    request.loaders = createLoaders();
     parseId(request);
     next();
   };

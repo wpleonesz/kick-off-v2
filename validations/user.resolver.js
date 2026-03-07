@@ -15,7 +15,6 @@ const schema = Yup.object().shape({
     .email('Correo electrónico incorrecto'),
   username: Yup.string().required('Usuario requerido').min(3).max(20),
   mobile: Yup.string().required('Número celular requerido'),
-  accountTypeId: Yup.number().required('Tipo de cuenta requerida'),
   roles: Yup.array()
     .required('Al menos un rol requerido')
     .min(1, 'Al menos un rol requerido'),

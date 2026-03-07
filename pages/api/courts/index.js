@@ -26,7 +26,9 @@ handler
   .post((request) => {
     request.do('create', async (api, prisma) => {
       try {
-        const response = await prisma.courts.create(request.body);
+        const response = await prisma.courts
+          .invalidates(['public:courts:*', 'courts:*'])
+          .create(request.body);
         return api.success(response);
       } catch (error) {
         console.log(error);

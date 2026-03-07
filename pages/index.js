@@ -168,7 +168,9 @@ const Home = () => {
     }
   }, [enqueueSnackbar]);
 
-  useEffect(() => load(), [load]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
   if (loading) return <Loading />;
 

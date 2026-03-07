@@ -28,6 +28,7 @@ model Base_user {
   accountTypeId    Int?
   logs             Audit_log[]
   courts           courts[]
+  bookings         bookings[]
 }
 
 model Base_person {
@@ -217,17 +218,35 @@ model courts {
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
   courtShedules courtShedules[]
+  bookings      bookings[]
 }
 
 model courtShedules {
-  id        Int      @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   courtId   Int
-  Court     courts   @relation(fields: [courtId], references: [id])
+  Court     courts     @relation(fields: [courtId], references: [id])
   dayOfWeek Int
-  duration  Int      @default(60)
+  duration  Int        @default(60)
   startTime String?
   endTime   String?
-  active    Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  active    Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  bookings  bookings[]
+}
+
+model bookings {
+  id         Int           @id @default(autoincrement())
+  active     Boolean       @default(true)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  date       DateTime // Fecha de la reserva
+  status     String        @default("pending") // pending | confirmed | cancelled
+  notes      String? // Notas opcionales
+  courtId    Int
+  court      courts        @relation(fields: [courtId], references: [id])
+  scheduleId Int
+  schedule   courtShedules @relation(fields: [scheduleId], references: [id])
+  userId     Int
+  user       Base_user     @relation(fields: [userId], references: [id])
 }
